@@ -92,7 +92,7 @@ class Plotter():
             alpha_temp = 15 * (i / number_of_points)
             liftObj.set_alpha(alpha_temp)
             liftObj.generate_dynamic_pressure()
-            self.add_plot_data(i, liftObj.calculate_lift())
+            self.add_plot_data(alpha_temp, liftObj.calculate_lift())
             self.add_sub_plot_data(i, alpha_temp)
     
     def add_plot_data(self, x_data_in, y_data_in):
@@ -104,17 +104,18 @@ class Plotter():
         self.y_sub_data.append(y_data_in)
 
     
-    def plot_data(self):
+    def plot_data(self, liftObj_in):
         plt.figure(1)
-        plt.subplot(211)
+        # plt.subplot(211)
         plt.plot(self.x_data, self.y_data)
+        plt.title(f'Lift/Angle generated at {liftObj_in.velocity} fps')
         plt.ylabel('lift generated (lbs)')
-        plt.xlabel('alpha (15 * )')
+        plt.xlabel('alpha (deg)')
         
-        plt.subplot(212)
-        plt.plot(self.x_sub_data, self.y_sub_data)
-        plt.xlabel('wing area (ft^2)')
-        plt.ylabel('alpha (deg)')
+        # plt.subplot(212)
+        # plt.plot(self.x_sub_data, self.y_sub_data)
+        # plt.xlabel('wing area (ft^2)')
+        # plt.ylabel('alpha (deg)')
         plt.show()
     
 
@@ -129,7 +130,7 @@ class Plotter():
 if __name__ == "__main__":
 
     print("------ Run 1 ------")
-    liftObj = Lift(40.5074, 0.00237, 3*24, 5)
+    liftObj = Lift(32, 0.00237, 0.667, 0) # Imperial units (fps, slug/ft^3, ft^2, degrees)
     liftObj.generate_dynamic_pressure()
     liftObj.toString()
 
@@ -146,5 +147,5 @@ if __name__ == "__main__":
 
     pl = Plotter()
     pl.getPlotData(liftObj, 75)
-    pl.plot_data()
+    pl.plot_data(liftObj)
 
